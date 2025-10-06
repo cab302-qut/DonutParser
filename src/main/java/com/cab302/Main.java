@@ -91,6 +91,17 @@ public class Main {
         List<Donut> donuts = gson.fromJson(json, donutListType);
 
         // Print parsed objects
-
+        for (Donut donut : donuts) {
+            System.out.println("Donut: " + donut.name + " (" + donut.id + ")");
+            System.out.println("  Batters:");
+            for (Batter batter : donut.batters.batter) {
+                System.out.println("    - " + batter.type);
+            }
+            System.out.println("  Toppings:");
+            for (Topping topping : donut.topping) {
+                System.out.println("    - " + topping.type);
+            }
+            System.out.println();
+        }
     }
 }
