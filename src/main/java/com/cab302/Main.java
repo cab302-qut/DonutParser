@@ -9,49 +9,88 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class App {
+public class Main {
     public static void main(String[] args) {
-        // Create a Gson instance
+        String json = """
+        [
+        	{
+        		"id": "0001",
+        		"type": "donut",
+        		"name": "Cake",
+        		"ppu": 0.55,
+        		"batters":
+        			{
+        				"batter":
+        					[
+        						{ "id": "1001", "type": "Regular" },
+        						{ "id": "1002", "type": "Chocolate" },
+        						{ "id": "1003", "type": "Blueberry" },
+        						{ "id": "1004", "type": "Devil's Food" }
+        					]
+        			},
+        		"topping":
+        			[
+        				{ "id": "5001", "type": "None" },
+        				{ "id": "5002", "type": "Glazed" },
+        				{ "id": "5005", "type": "Sugar" },
+        				{ "id": "5007", "type": "Powdered Sugar" },
+        				{ "id": "5006", "type": "Chocolate with Sprinkles" },
+        				{ "id": "5003", "type": "Chocolate" },
+        				{ "id": "5004", "type": "Maple" }
+        			]
+        	},
+        	{
+        		"id": "0002",
+        		"type": "donut",
+        		"name": "Raised",
+        		"ppu": 0.55,
+        		"batters":
+        			{
+        				"batter":
+        					[
+        						{ "id": "1001", "type": "Regular" }
+        					]
+        			},
+        		"topping":
+        			[
+        				{ "id": "5001", "type": "None" },
+        				{ "id": "5002", "type": "Glazed" },
+        				{ "id": "5005", "type": "Sugar" },
+        				{ "id": "5003", "type": "Chocolate" },
+        				{ "id": "5004", "type": "Maple" }
+        			]
+        	},
+        	{
+        		"id": "0003",
+        		"type": "donut",
+        		"name": "Old Fashioned",
+        		"ppu": 0.55,
+        		"batters":
+        			{
+        				"batter":
+        					[
+        						{ "id": "1001", "type": "Regular" },
+        						{ "id": "1002", "type": "Chocolate" }
+        					]
+        			},
+        		"topping":
+        			[
+        				{ "id": "5001", "type": "None" },
+        				{ "id": "5002", "type": "Glazed" },
+        				{ "id": "5003", "type": "Chocolate" },
+        				{ "id": "5004", "type": "Maple" }
+        			]
+        	}
+        ]
+        """;
+
+        //Create GSON Object
         Gson gson = new Gson();
+        Type donutListType = new TypeToken<List<Donut>>() {
+        }.getType();
+        List<Donut> donuts = gson.fromJson(json, donutListType);
 
-        try (Reader reader = new FileReader("data.json")) {
-            // Define the type for the list of Donut objects
-            // This is necessary for Gson to correctly deserialize a generic List
-            Type donutListType = new TypeToken<List<Donut>>() {}.getType();
+        // Print parsed objects
 
-            // Read the JSON file and map it to a List of Donut objects
-            List<Donut> donuts = gson.fromJson(reader, donutListType);
-
-            System.out.println("Successfully parsed JSON data using Gson!");
-
-            // Iterate through the list of donuts and print some information
-            for (Donut donut : donuts) {
-                System.out.println("\n--- Donut ---");
-                System.out.println("ID: " + donut.getId());
-                System.out.println("Name: " + donut.getName());
-                System.out.println("Type: " + donut.getType());
-                System.out.println("PPU: " + donut.getPpu());
-
-                // Access batters
-                if (donut.getBatters() != null && donut.getBatters().getBatter() != null) {
-                    System.out.println("  Batters:");
-                    for (Batter batter : donut.getBatters().getBatter()) {
-                        System.out.println("    - ID: " + batter.getId() + ", Type: " + batter.getType());
-                    }
-                }
-
-                // Access toppings
-                if (donut.getTopping() != null) {
-                    System.out.println("  Toppings:");
-                    for (Topping topping : donut.getTopping()) {
-                        System.out.println("    - ID: " + topping.getId() + ", Type: " + topping.getType());
-                    }
-                }
-            }
-
-        } catch (IOException e) {
-            System.err.println("Error reading or parsing JSON file: " + e.getMessage());
-            e.printStackTrace();
-        }
     }
 }

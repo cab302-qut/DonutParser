@@ -1,20 +1,12 @@
 package com.cab302;
 
-public class Batter {
-    private String id;
-    private String type;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.List;
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
-
-    @Override
-    public String toString() {
-        return "Batter{" +
-                "id='" + id + '\'' +
-                ", type='" + type + '\'' +
-                '}';
-    }
+// Class representing Batter
+class Batter {
+    String id;
+    String type;
 }
